@@ -724,7 +724,7 @@ class Cycle(Transformation):
             shapes = [shape_ | Scale(sx=self.s**i) for i, shape_ in enumerate(shapes)]
         return Group(shapes)
 
-def show(*shapes):
+def show(*shapes, width=300, height=300):
     """Shows the given shapes.
 
     It also adds a border to the canvas and axis at the origin with
@@ -735,11 +735,21 @@ def show(*shapes):
         shapes:
             The shapes to show.
 
+        width:
+            The width of the rendering svg element .
+
+        height:
+            The height of the rendering svg element.
+
     Examples:
 
     Show a circle:
 
         >>> show(circle())
+
+    Show a circle in 600x600 svg element:
+
+        >>> show(circle(), width=600, height=600)
 
     Show a circle and square.
 
@@ -748,12 +758,12 @@ def show(*shapes):
         >>> show(c, s)
     """
     markers = [
-        Rectangle(width=300, height=300, stroke="#ddd"),
-        Line(start=Point(x=-150, y=0), end=Point(x=150, y=0), stroke="#ddd"),
-        Line(start=Point(x=0, y=-150), end=Point(x=0, y=150), stroke="#ddd")
+        Rectangle(width=width, height=height, stroke="#ddd"),
+        Line(start=Point(x=-(width//2), y=0), end=Point(x=(width//2), y=0), stroke="#ddd"),
+        Line(start=Point(x=0, y=-(height//2)), end=Point(x=0, y=(height//2)), stroke="#ddd")
     ]
     shapes = markers + list(shapes)
-    img = SVG(shapes)
+    img = SVG(shapes, width=width, height=height)
 
     from IPython.display import display
     display(img)
